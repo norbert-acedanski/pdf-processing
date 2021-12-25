@@ -22,7 +22,7 @@ All required packages in requirements.txt file.
 3. Count the number of lines in each paragraph and put it in _numberOfLinesInEachParagraph_ list.
 4. Set _makeAdditionalSpacesBetweenParagraphs_ and _makeTabulationsAtTheBeginningOfTheParagraph_ variables accordingly.
 5. Run the script.
-6. After succesful execution, 2 files should be created: .docx and .txt file with processed text.
+6. After successful execution, 2 files should be created: .docx and .txt file with processed text.
 
 **Note:** Script checks whether, during the processing, word at the beginning of the paragraph starts with lowercase letters. If it does, script will send logging information about possible mistake in counting the lines and exit the execution.
 If you have lowercase letters if your pdf file at the beggining of the paragraph, script will count them as fails in counting.
