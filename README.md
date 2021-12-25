@@ -24,3 +24,8 @@ Python 3.8.0
 I personally use it as a not-so-quick way of processing pdf files for .docx usage (listening to the text).
 In order to listen to the document without having breaks at the end-line characters, that are present when copying directly from pdf to word document, they need to be removed.
 Manually processing all changes requires more time, than counting the lines and using the script.
+
+Script project contains also a sample txt file for processing and number of lines inf each paragraph in _numberOfLinesInEachParagraph_ already specified.
+
+# Licence
+Distributed under the MIT License. See LICENSE file for more information.
