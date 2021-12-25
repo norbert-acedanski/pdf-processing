@@ -19,6 +19,8 @@ Python 3.8.0
 2. Make sure, that _targetFileName_ variable is set properly.
 3. Count the number of lines in each paragraph and put it in _numberOfLinesInEachParagraph_ list.
 4. Set _makeAdditionalSpacesBetweenParagraphs_ and _makeTabulationsAtTheBeginningOfTheParagraph_ variables accordingly.
+5. Run the script.
+6. After succesful execution, 2 files should be created: .docx and .txt file with processed text.
 
 # Usage
 I personally use it as a not-so-quick way of processing pdf files for .docx usage (listening to the text).
