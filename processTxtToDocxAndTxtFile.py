@@ -35,7 +35,7 @@ def copyAndFixTextFromFile(inputFileName):
                 countLines = 1
                 countParagraphs += 1
             else:
-                temporaryLine = temporaryLine.replace("\n", "")
+                temporaryLine = temporaryLine.replace("\n", " ")
                 countLines += 1
             fileContent += temporaryLine
     fileContent = fileContent[:-1]
