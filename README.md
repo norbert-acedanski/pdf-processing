@@ -14,6 +14,8 @@ Python 3.8.0
 ##### packages:
 - docx (pip install python-docx)
 
+All required packages in requirements.txt file.
+
 ### Working with pdf-processing:
 1. Copy text you need to process to a .txt file and save it.
 2. Make sure, that _targetFileName_ variable is set properly.
