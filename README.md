@@ -4,6 +4,7 @@
 Small project, that helps with pdf processing.
 For now, there is only one file, that processes text copied from pdf to .txt file.
 It removes all end-line characters from pargraphs, specified inside the file, adds spaces between paragraphs and tabulations at the beginning of each paragraph if required.
+Also possible to fully justify the document.
 Unfortunately for now, amount of lines in each paragraph must be specified in program itself.
 
 # Built With
@@ -20,7 +21,7 @@ All required packages in requirements.txt file.
 1. Copy text you need to process to a .txt file and save it.
 2. Make sure, that _targetFileName_ variable is set properly.
 3. Count the number of lines in each paragraph and put it in _numberOfLinesInEachParagraph_ list.
-4. Set _makeAdditionalSpacesBetweenParagraphs_ and _makeTabulationsAtTheBeginningOfTheParagraph_ variables accordingly.
+4. Set _makeAdditionalSpacesBetweenParagraphs_,  _makeTabulationsAtTheBeginningOfTheParagraph_ and _fullyJustifyParagraph_ variables accordingly.
 5. Run the script.
 6. After successful execution, 2 files should be created: .docx and .txt file with processed text.
 
