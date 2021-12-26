@@ -1,10 +1,13 @@
 import sys
 from docx import Document
+from docx.shared import Inches
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 numberOfLinesInEachParagraph = [1, 1, 1, 7, 6, 10, 8, 9]
 
 makeAdditionalSpacesBetweenParagraphs = True
 makeTabulationsAtTheBeginningOfTheParagraph = False
+fullyJustifyParagraph = True
 
 targetFileName = "textToProcess.txt"
 document = Document()
@@ -12,11 +15,10 @@ document = Document()
 def saveAsNewFile(processedText):
     with open('processedText.txt', 'w', encoding='utf-8') as outFile_TXT:
         outFile_TXT.write(processedText)
-    document.add_paragraph(processedText)
     document.save('processedText.docx')
 
 def copyAndFixTextFromFile(inputFileName):
-    fileContent = ""
+    processedTextForTxt = ""
     countLines = 1
     countParagraphs = 0
     with open(inputFileName, 'r', encoding='utf-8') as inFile:
@@ -27,19 +29,30 @@ def copyAndFixTextFromFile(inputFileName):
                     if temporaryLine[0].islower():
                         print("Possible mistake in counting the lines. Line, that mistake occurred: " + str(lineNumber + 1))
                         sys.exit()
+                paragraphForWord = document.add_paragraph()
+                processedTextForWord = ""
                 if makeTabulationsAtTheBeginningOfTheParagraph:
-                    temporaryLine = '\t' + temporaryLine
-            if countLines == numberOfLinesInEachParagraph[countParagraphs]:
+                    paragraphForWord.paragraph_format.left_indent = Inches(0.5)
+                    processedTextForTxt += '\t'
+            if countLines != numberOfLinesInEachParagraph[countParagraphs]:
+                temporaryLine = temporaryLine.replace("\n", " ")
+                processedTextForTxt += temporaryLine
+                processedTextForWord += temporaryLine
+                countLines += 1
+            else:
+                processedTextForTxt += temporaryLine
+                temporaryLine = temporaryLine.replace("\n", "")
+                processedTextForWord += temporaryLine
+                if fullyJustifyParagraph:
+                    paragraphForWord.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+                paragraphForWord.add_run(processedTextForWord)
                 if makeAdditionalSpacesBetweenParagraphs:
-                    temporaryLine +='\n'
+                    processedTextForTxt += '\n'
+                    document.add_paragraph()
                 countLines = 1
                 countParagraphs += 1
-            else:
-                temporaryLine = temporaryLine.replace("\n", " ")
-                countLines += 1
-            fileContent += temporaryLine
-    fileContent = fileContent[:-1]
-    return fileContent
+    processedTextForTxt = processedTextForTxt[:-1]
+    return processedTextForTxt
 
 if __name__ == '__main__':
     processedText = copyAndFixTextFromFile(targetFileName)
