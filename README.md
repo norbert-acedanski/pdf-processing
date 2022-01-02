@@ -12,10 +12,10 @@ Python 3.8.0
 
 # Getting started
 ### Requirements
-##### packages:
-- docx (pip install python-docx)
 
 All required packages in requirements.txt file.
+
+To install all required packages, type _pip install -r requirements.txt_ int the terminal.
 
 ### Working with pdf-processing:
 1. Copy text you need to process to a .txt file and save it.
