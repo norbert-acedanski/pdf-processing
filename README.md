@@ -15,7 +15,7 @@ Python 3.8.0
 
 All required packages in requirements.txt file.
 
-To install all required packages, type _pip install -r requirements.txt_ in the terminal.
+To install all required packages, type "_pip install -r requirements.txt_" in the terminal.
 
 ### Working with pdf-processing:
 1. Copy text you need to process to a .txt file and save it.
