@@ -1,4 +1,3 @@
-import sys
 from docx import Document
 from docx.shared import Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
