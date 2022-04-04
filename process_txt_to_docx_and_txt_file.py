@@ -28,8 +28,7 @@ def copy_and_fix_text_from_file(input_filename):
                 if count_lines == 1:
                     if temporary_line[0].isalpha():
                         if temporary_line[0].islower():
-                            print("Possible mistake in counting the lines. Line, that mistake occurred: " + str(line_number + 1))
-                            sys.exit()
+                            raise SyntaxError("Possible mistake in counting the lines. Line, that mistake occurred: " + str(line_number + 1))
                     paragraph_for_word = document.add_paragraph()
                     processed_text_for_word = ""
                     if make_tabulations_at_the_beginning_of_the_paragraph:
@@ -53,8 +52,7 @@ def copy_and_fix_text_from_file(input_filename):
                     count_lines = 1
                     count_paragraphs += 1
     except OSError:
-        print("File \"" + input_filename + "\" could not be opened. Check file name or file path.")
-        sys.exit()
+        raise FileNotFoundError("File \"" + input_filename + "\" could not be opened. Check file name or file path.")
     processed_text_for_txt = processed_text_for_txt[:-1]
     return processed_text_for_txt
 
