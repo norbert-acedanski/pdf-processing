@@ -8,7 +8,7 @@ Also possible to fully justify the document.
 Unfortunately for now, amount of lines in each paragraph must be specified in program itself.
 
 # Built With
-Python 3.8.0
+Python 3.9.10
 
 # Getting started
 ### Requirements
