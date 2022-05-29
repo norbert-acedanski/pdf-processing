@@ -4,7 +4,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 number_of_lines_in_each_paragraph = [1, 1, 1, 7, 6, 10, 8, 9]
 
-make_additional_spaces_between_paragraphs = True
+make_additional_spaces_between_paragraphs = False
 make_tabulations_at_the_beginning_of_the_paragraph = False
 fully_justify_paragraph = True
 
