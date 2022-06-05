@@ -2,10 +2,8 @@ from typing import List
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-target_filename = "text_to_process.txt"
-
-def load_text_from_file() -> List[str]:
-    with open(target_filename, "r", encoding="utf-8") as input_file:
+def load_text_from_file(filename: str="text_to_process.txt") -> List[str]:
+    with open(filename, "r", encoding="utf-8") as input_file:
         data = input_file.readlines()
     if data[-1][-1] == "\n":
         data[-1] = data[-1][:-1]
