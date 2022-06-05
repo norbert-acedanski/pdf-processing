@@ -1,60 +1,78 @@
+from typing import List
 from docx import Document
-from docx.shared import Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-number_of_lines_in_each_paragraph = [1, 1, 1, 7, 6, 10, 8, 9]
-
-make_additional_spaces_between_paragraphs = False
-make_tabulations_at_the_beginning_of_the_paragraph = False
+make_additional_spaces_between_paragraphs = True
+make_tabulations_at_the_beginning_of_the_paragraph = True
 fully_justify_paragraph = True
 
 target_filename = "text_to_process.txt"
 document = Document()
 
-def save_as_new_file(processed_text):
-    with open('processed_text.txt', 'w', encoding='utf-8') as out_file_txt:
-        out_file_txt.write(processed_text)
-    document.save('processed_text.docx')
+def load_text_from_file() -> List[str]:
+    with open(target_filename, "r", encoding="utf-8") as input_file:
+        data = input_file.readlines()
+    if data[-1][-1] == "\n":
+        data[-1] = data[-1][:-1]
+    return data
 
-def copy_and_fix_text_from_file(input_filename):
-    processed_text_for_txt = ""
-    count_lines = 1
-    count_paragraphs = 0
-    try:
-        with open(input_filename, 'r', encoding='utf-8') as in_file:
-            for (line_number, line_content) in enumerate(in_file):
-                temporary_line = line_content
-                if count_lines == 1:
-                    if temporary_line[0].isalpha():
-                        if temporary_line[0].islower():
-                            raise SyntaxError("Possible mistake in counting the lines. Line, that mistake occurred: " + str(line_number + 1))
-                    paragraph_for_word = document.add_paragraph()
-                    processed_text_for_word = ""
-                    if make_tabulations_at_the_beginning_of_the_paragraph:
-                        paragraph_for_word.paragraph_format.left_indent = Inches(0.5)
-                        processed_text_for_txt += '\t'
-                if count_lines != number_of_lines_in_each_paragraph[count_paragraphs]:
-                    temporary_line = temporary_line.replace("\n", " ")
-                    processed_text_for_txt += temporary_line
-                    processed_text_for_word += temporary_line
-                    count_lines += 1
-                else:
-                    processed_text_for_txt += temporary_line
-                    temporary_line = temporary_line.replace("\n", "")
-                    processed_text_for_word += temporary_line
-                    if fully_justify_paragraph:
-                        paragraph_for_word.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
-                    paragraph_for_word.add_run(processed_text_for_word)
-                    if make_additional_spaces_between_paragraphs:
-                        processed_text_for_txt += '\n'
-                        document.add_paragraph()
-                    count_lines = 1
-                    count_paragraphs += 1
-    except OSError:
-        raise FileNotFoundError("File \"" + input_filename + "\" could not be opened. Check file name or file path.")
-    processed_text_for_txt = processed_text_for_txt[:-1]
-    return processed_text_for_txt
+def process_data_to_txt(data: List[str], additional_spaces_between_paragraphs: bool=False, tabulations_before_each_paragraph: bool=False):
+    processed_text = ""
+    for line_number, line_content in enumerate(data):
+        if line_number == 0:
+            previous_line = line_content
+            previous_broken_line = False
+            continue
+        current_line = line_content
+        if (broken_line := current_line[0].isalpha() and current_line[0].islower()):
+            previous_line = previous_line[:-1] + " "
+        additional_paragraph_for_txt = "\n" if not broken_line and additional_spaces_between_paragraphs else ""
+        tab_character = "\t" if not previous_broken_line and tabulations_before_each_paragraph else ""
+        processed_text += tab_character + previous_line + additional_paragraph_for_txt
+        previous_line = current_line
+        previous_broken_line = broken_line
+    processed_text += previous_line
+    return processed_text[:-1] if processed_text[-1] == "\n" else processed_text
+
+def process_data_to_word(data: List[str], additional_spaces_between_paragraphs: bool=False, tabulations_before_each_paragraph: bool=False, justify_paragraph: bool=True):
+    document = Document()
+    processed_paragraph = ""
+    for line_number in range((number_of_lines := len(data)) - 1):
+        if line_number == 0:
+            paragraph = document.add_paragraph()
+        if data[line_number] == "\n":
+            continue
+        if data[line_number + 1][0].isalpha() and data[line_number + 1][0].islower():
+            processed_paragraph += data[line_number][:-1] + " "
+            if line_number == number_of_lines - 2:
+                processed_paragraph += data[-1][:-1]
+        else:
+            processed_paragraph += data[line_number][:-1]
+            processed_paragraph = "\t" + processed_paragraph if tabulations_before_each_paragraph else processed_paragraph
+            if justify_paragraph:
+                paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+            paragraph.add_run(processed_paragraph)
+            if additional_spaces_between_paragraphs and line_number != len(data) - 1:
+                document.add_paragraph()
+            paragraph = document.add_paragraph()
+            processed_paragraph = ""
+    processed_paragraph += data[-1]
+    processed_paragraph = "\t" + processed_paragraph if tabulations_before_each_paragraph else processed_paragraph
+    if justify_paragraph:
+        paragraph.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
+    paragraph.add_run(processed_paragraph)
+    return document
+
+def save_data_to_txt(processed_text: str):
+    with open("processed_text.txt", "w", encoding="utf-8") as out_file_txt:
+        out_file_txt.write(processed_text)
+
+def save_data_to_word(document: Document):
+    document.save("processed_text.docx")
 
 if __name__ == '__main__':
-    processed_text = copy_and_fix_text_from_file(target_filename)
-    save_as_new_file(processed_text)
+    text_to_process = load_text_from_file()
+    processed_text_txt = process_data_to_txt(text_to_process)
+    processed_document_word = process_data_to_word(text_to_process)
+    save_data_to_txt(processed_text_txt)
+    save_data_to_word(processed_document_word)
