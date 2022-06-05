@@ -2,12 +2,7 @@ from typing import List
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
-make_additional_spaces_between_paragraphs = True
-make_tabulations_at_the_beginning_of_the_paragraph = True
-fully_justify_paragraph = True
-
 target_filename = "text_to_process.txt"
-document = Document()
 
 def load_text_from_file() -> List[str]:
     with open(target_filename, "r", encoding="utf-8") as input_file:
