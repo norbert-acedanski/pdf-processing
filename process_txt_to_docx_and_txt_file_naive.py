@@ -11,10 +11,12 @@ fully_justify_paragraph = True
 target_filename = "text_to_process.txt"
 document = Document()
 
+
 def save_as_new_file(processed_text):
     with open('processed_text.txt', 'w', encoding='utf-8') as out_file_txt:
         out_file_txt.write(processed_text)
     document.save('processed_text.docx')
+
 
 def copy_and_fix_text_from_file(input_filename):
     processed_text_for_txt = ""
@@ -27,7 +29,8 @@ def copy_and_fix_text_from_file(input_filename):
                 if count_lines == 1:
                     if temporary_line[0].isalpha():
                         if temporary_line[0].islower():
-                            raise SyntaxError("Possible mistake in counting the lines. Line, that mistake occurred: " + str(line_number + 1))
+                            raise SyntaxError(f"Possible mistake in counting the lines. "
+                                              f"Line, that mistake occurred: {line_number + 1}")
                     paragraph_for_word = document.add_paragraph()
                     processed_text_for_word = ""
                     if make_tabulations_at_the_beginning_of_the_paragraph:
@@ -51,9 +54,10 @@ def copy_and_fix_text_from_file(input_filename):
                     count_lines = 1
                     count_paragraphs += 1
     except OSError:
-        raise FileNotFoundError("File \"" + input_filename + "\" could not be opened. Check file name or file path.")
+        raise FileNotFoundError(f'File "{input_filename}" could not be opened. Check file name or file path.')
     processed_text_for_txt = processed_text_for_txt[:-1]
     return processed_text_for_txt
+
 
 if __name__ == '__main__':
     processed_text = copy_and_fix_text_from_file(target_filename)
